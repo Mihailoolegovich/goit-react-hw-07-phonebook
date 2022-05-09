@@ -3,6 +3,7 @@ import Section from './Section';
 import ContactForm from './ContactForm';
 import Filter from './Filter';
 import ContactList from './ContactList';
+import { ToastContainer } from 'react-toastify';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Filter />
         <ContactList />
       </Section>
+      <ToastContainer />
     </>
   );
 }

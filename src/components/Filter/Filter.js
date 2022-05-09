@@ -1,12 +1,11 @@
 import React from 'react';
-import './Filter.css';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { filterChange } from '../../redux/contactsReducer';
+import { filterChange } from 'redux/filter/filterSlice';
+import './Filter.css';
 
 export default function Filter() {
   const dispatch = useDispatch();
-  const filterName = useSelector(state => state.contacts.filter);
+  const filterName = useSelector(state => state.filter);
 
   function filter(e) {
     dispatch(filterChange(e.currentTarget.value));

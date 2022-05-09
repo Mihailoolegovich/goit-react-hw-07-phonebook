@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsReducer';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useCreateContactMutation } from 'redux/contacts/contactsApi';
 import './ContactForm.css';
-import { nanoid } from 'nanoid';
 
 export default function ContactForm() {
-  const dispatch = useDispatch();
+  const [createContact, { isLoading: isAdding }] = useCreateContactMutation();
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -16,10 +16,23 @@ export default function ContactForm() {
     name === 'number' && setNumber(value);
   }
 
+  function toastAdd() {
+    toast.success(`New contact ${name} added!`, {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
   function handleSubmit(e) {
     e.preventDefault();
-    const data = { id: nanoid(), name: name, number: number };
-    dispatch(addContact(data));
+    const data = { name: name, phone: number };
+
+    createContact(data).then(() => toastAdd);
+    toastAdd();
     setName('');
     setNumber('');
   }
@@ -54,8 +67,13 @@ export default function ContactForm() {
           required
         />
       </label>
-      <button className="form__btn" type="submit" name="button">
-        Add contact
+      <button
+        className="form__btn "
+        disabled={isAdding}
+        type="submit"
+        name="button"
+      >
+        {isAdding ? <div className="loader "></div> : 'Add contact'}
       </button>
     </form>
   );
